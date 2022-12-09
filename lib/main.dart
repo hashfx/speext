@@ -31,7 +31,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  stt.SpeechToText _speech;
+  late stt.SpeechToText _speech;
   bool _isListening = false;
   String text = "Press button and speak your data";
   double _confidence = 1.0;
@@ -47,6 +47,11 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
       ),
     );
   }
