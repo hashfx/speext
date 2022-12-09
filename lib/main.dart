@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 void main() {
@@ -32,9 +33,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  // init vars and SpeechToText instance
   late stt.SpeechToText _speech;
   bool _isListening = false;
-  String text = "Press button and speak your data";
+  String _text = "Press button and speak your data";
   double _confidence = 1.0;
 
   @override
@@ -42,6 +44,38 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _speech = stt.SpeechToText(); // instance of SpeechToText
   }
+
+  // mapping to highlight spoken words
+  final Map<String, HighlightedWord> _highlights = {
+    'flutter': HighlightedWord(
+      onTap: () => print('flutter'),
+      textStyle: const TextStyle(
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    'voice': HighlightedWord(
+      onTap: () => print('voice'),
+      textStyle: const TextStyle(
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    'good': HighlightedWord(
+      onTap: () => print('good'),
+      textStyle: const TextStyle(
+        color: Colors.red,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    'text': HighlightedWord(
+      onTap: () => print('text'),
+      textStyle: const TextStyle(
+        color: Colors.purple,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +94,21 @@ class _MainScreenState extends State<MainScreen> {
         child: FloatingActionButton(
           onPressed: () {},
           child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+        ),
+      ),
+      body: SingleChildScrollView(
+        reverse: true,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
+          child: TextHighlight(
+            text: _text,
+            words: _highlights,
+            textStyle: const TextStyle(
+              fontSize: 32.0,
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ),
       ),
     );
