@@ -97,11 +97,11 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        reverse: true,
+        reverse: true,  // scroll container as more text is added
         child: Container(
           padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
           child: TextHighlight(
-            text: _text,
+            text: _text,  // text should not be empty
             words: _highlights,
             textStyle: const TextStyle(
               fontSize: 32.0,
