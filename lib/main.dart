@@ -92,16 +92,16 @@ class _MainScreenState extends State<MainScreen> {
         repeatPauseDuration: const Duration(milliseconds: 100),
         repeat: true,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: _listen,
           child: Icon(_isListening ? Icons.mic : Icons.mic_none),
         ),
       ),
       body: SingleChildScrollView(
-        reverse: true,  // scroll container as more text is added
+        reverse: true, // scroll container as more text is added
         child: Container(
           padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
           child: TextHighlight(
-            text: _text,  // text should not be empty
+            text: _text, // text should not be empty
             words: _highlights,
             textStyle: const TextStyle(
               fontSize: 32.0,
@@ -112,5 +112,34 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  void _listen() async {
+    // if listening is false
+    if (!_isListening) {
+      // initialize speech recognition
+      bool available = await _speech.initialize(
+        onStatus: (val) => print('onStatus: $val'),
+        onError: (val) => print('onError: $val'),
+      );
+      // when speech recognition is initialized successfully
+      if (available) {
+        // set _isListening to true
+        setState(() => _isListening = true);
+        // start listening session
+        _speech.listen(
+          // whenever a new word is spoken, it sets the state of app
+          onResult: (val) => setState(() {
+            _text = val.recognizedWords; // update text to recognized words
+            if (val.hasConfidenceRating && val.confidence > 0) {
+              _confidence = val.confidence;
+            }
+          }),
+        );
+      }
+    } else {
+      setState(() => _isListening = false);
+      _speech.stop(); // stop listening session
+    }
   }
 }
