@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -49,9 +50,17 @@ class _MainScreenState extends State<MainScreen> {
         title: Text('Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+      floatingActionButton: AvatarGlow(
+        endRadius: 75.0,
+        animate: _isListening,
+        glowColor: Theme.of(context).primaryColor,
+        duration: const Duration(milliseconds: 2000),
+        repeatPauseDuration: const Duration(milliseconds: 100),
+        repeat: true,
+        child: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+        ),
       ),
     );
   }
