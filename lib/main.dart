@@ -34,9 +34,9 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   // init vars and SpeechToText instance
-  late stt.SpeechToText _speech;
+  stt.SpeechToText? _speech;
   bool _isListening = false;
-  String _text = "Press button and speak your data";
+  String _text = "Press button and mark your words";
   double _confidence = 1.0;
 
   @override
@@ -118,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
     // if listening is false
     if (!_isListening) {
       // initialize speech recognition
-      bool available = await _speech.initialize(
+      bool available = await _speech!.initialize(
         onStatus: (val) => print('onStatus: $val'),
         onError: (val) => print('onError: $val'),
       );
@@ -127,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
         // set _isListening to true
         setState(() => _isListening = true);
         // start listening session
-        _speech.listen(
+        _speech!.listen(
           // whenever a new word is spoken, it sets the state of app
           onResult: (val) => setState(() {
             _text = val.recognizedWords; // update text to recognized words
@@ -139,7 +139,7 @@ class _MainScreenState extends State<MainScreen> {
       }
     } else {
       setState(() => _isListening = false);
-      _speech.stop(); // stop listening session
+      _speech!.stop(); // stop listening session
     }
   }
 }
